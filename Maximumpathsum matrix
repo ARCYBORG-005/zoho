@@ -1,0 +1,46 @@
+class Maxsummat {
+    public static int maxpath(int [][]matrix) {
+        int r = matrix.length - 1;
+        int c = matrix[0].length - 1;
+        int[] prev = new int[c+1];
+        int[] current = new int[c+1];
+
+        // Base case (first row)
+        for (int i = 0; i < prev.length; i++) {
+            prev[i] = matrix[0][i];
+        }
+
+        // Fill DP row by row
+        for (int j = 1; j <= r; j++) {
+            for (int k = 0; k <= c; k++) {
+                int up = prev[k];
+                int upleft = (k > 0) ? prev[k-1] : Integer.MIN_VALUE;
+                int upright = (k < c) ? prev[k+1] : Integer.MIN_VALUE;
+
+                current[k] = matrix[j][k] + Math.max(up, Math.max(upleft, upright));
+            }
+            // Correct swap
+            int[] temp = prev;
+            prev = current;
+            current = temp;
+        }
+
+        // Find final answer
+        int ans = Integer.MIN_VALUE;
+        for (int val : prev) {
+            ans = Math.max(ans, val);
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = {
+            {10, 10, 2, 0, 20, 4},
+            {1,  0, 0, 30, 2, 5},
+            {0, 10, 4,  0, 2, 0},
+            {1,  0, 2, 20, 0, 4}
+        };
+
+        System.out.println(maxpath(matrix)); // ✅ should print 74
+    }
+}
