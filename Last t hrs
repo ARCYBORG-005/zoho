@@ -1,0 +1,29 @@
+class EventsInLastTHours {
+    public static int[] countEvents(int[] arr, int T) {
+        int n = arr.length;
+        int[] result = new int[n];
+
+        int start = 0; // left pointer of window
+        for (int end = 0; end < n; end++) {
+            // shrink window until arr[end] - arr[start] < T condition holds
+            while (arr[end] - arr[start] >= T) {
+                start++;
+            }
+            // window size = (end - start + 1)
+            result[end] = end - start + 1;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 10, 11};
+        int T = 5;
+        int[] output = countEvents(arr, T);
+
+        for (int x : output) {
+            System.out.print(x + " ");
+        }
+        // Output: 1 2 3 1 2
+    }
+}
