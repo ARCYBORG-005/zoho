@@ -1,0 +1,53 @@
+class ReorganizeString {
+    public static String reorganizeString(String s) {
+        int n = s.length();
+        int[] freq = new int[26];
+
+        // Step 1: Count frequency of each char
+        for (char c : s.toCharArray()) {
+            freq[c - 'a']++;
+        }
+
+        // Step 2: Find max frequency char
+        int maxChar = 0;
+        for (int i = 1; i < 26; i++) {
+            if (freq[i] > freq[maxChar]) {
+                maxChar = i;
+            }
+        }
+
+        // Step 3: Check impossible case
+        if (freq[maxChar] > (n + 1) / 2) {
+            return "";
+        }
+
+        // Step 4: Fill result array
+        char[] result = new char[n];
+        int index = 0;
+
+        // Place the most frequent character first
+        while (freq[maxChar] > 0) {
+            result[index] = (char) (maxChar + 'a');
+            index += 2;
+            freq[maxChar]--;
+        }
+
+        // Place remaining characters
+        for (int i = 0; i < 26; i++) {
+            while (freq[i] > 0) {
+                if (index >= n) index = 1; // move to odd indices
+                result[index] = (char) (i + 'a');
+                index += 2;
+                freq[i]--;
+            }
+        }
+
+        return new String(result); // LeetCode style return
+    }
+
+    public static void main(String[] args) {
+        String s = "aaabbc";
+        System.out.println("Reorganized: " + reorganizeString(s));
+        // Possible output: "ababac" or "abcaba"
+    }
+}
