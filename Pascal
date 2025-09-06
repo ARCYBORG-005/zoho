@@ -1,0 +1,48 @@
+public class PascalsTriangle {
+
+    // Function to print Pascal's Triangle up to n rows
+    public static void printPascalsTriangle(int n) {
+        if (n <= 0) {
+            System.out.println("Number of rows must be positive");
+            return;
+        }
+
+        int[][] triangle = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            // Each row starts and ends with 1
+            triangle[i][0] = 1;
+            triangle[i][i] = 1;
+
+            // Fill inner values: sum of two above
+            for (int j = 1; j < i; j++) {
+                triangle[i][j] = triangle[i - 1][j - 1] + triangle[i - 1][j];
+            }
+        }
+
+        // Print pattern
+        for (int i = 0; i < n; i++) {
+            // Print leading spaces for alignment
+            for (int space = 0; space < n - i - 1; space++) {
+                System.out.print(" ");
+            }
+
+            for (int j = 0; j <= i; j++) {
+                System.out.print(triangle[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // ✅ Test cases
+    public static void main(String[] args) {
+        System.out.println("Pascal's Triangle with 5 rows:");
+        printPascalsTriangle(5);
+
+        System.out.println("\nPascal's Triangle with 1 row:");
+        printPascalsTriangle(1);
+
+        System.out.println("\nPascal's Triangle with 0 rows (edge case):");
+        printPascalsTriangle(0);
+    }
+}
