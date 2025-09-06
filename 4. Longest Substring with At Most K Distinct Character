@@ -1,0 +1,28 @@
+public class LongestSubstringKDistinct {
+    public static int lengthOfLongestSubstringKDistinct(String s, int k) {
+        if (s == null || s.isEmpty() || k == 0) return 0;
+
+        int[] freq = new int[256];
+        int distinct = 0, maxLen = 0, start = 0;
+
+        for (int end = 0; end < s.length(); end++) {
+            char c = s.charAt(end);
+            if (freq[c] == 0) distinct++;
+            freq[c]++;
+
+            while (distinct > k) {
+                char left = s.charAt(start);
+                freq[left]--;
+                if (freq[left] == 0) distinct--;
+                start++;
+            }
+            maxLen = Math.max(maxLen, end - start + 1);
+        }
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(lengthOfLongestSubstringKDistinct("eceba", 2)); // 3
+        System.out.println(lengthOfLongestSubstringKDistinct("aa", 1));    // 2
+    }
+}
