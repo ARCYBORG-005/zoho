@@ -1,0 +1,35 @@
+import java.util.Arrays;
+
+public class FourSum {
+    public static boolean hasQuadruplet(int[] arr, int target) {
+        if (arr == null || arr.length < 4) return false; // edge case
+
+        Arrays.sort(arr); // required for two-pointer logic
+
+        for (int i = 0; i < arr.length - 3; i++) {
+            for (int j = i + 1; j < arr.length - 2; j++) {
+                int left = j + 1, right = arr.length - 1;
+
+                while (left < right) {
+                    int sum = arr[i] + arr[j] + arr[left] + arr[right];
+
+                    if (sum == target) {
+                        return true; // found one quadruplet
+                    } else if (sum < target) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 5, 7, 10};
+        System.out.println(hasQuadruplet(arr, 20)); // true (2+3+5+10)
+        System.out.println(hasQuadruplet(arr, 50)); // false
+        System.out.println(hasQuadruplet(new int[]{}, 10)); // false (edge case)
+    }
+}
