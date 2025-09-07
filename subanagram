@@ -1,0 +1,55 @@
+public class FindAnagramInString {
+
+    public static void findAnagrams(String s, String p) {
+        if (s == null || p == null || s.length() < p.length()) {
+            System.out.println("No anagrams");
+            return;
+        }
+
+        int m = p.length();
+        int n = s.length();
+
+        int[] pCount = new int[26];  // frequency of pattern
+        int[] sCount = new int[26];  // frequency of current window
+
+        // Step 1: Build frequency for pattern and first window
+        for (int i = 0; i < m; i++) {
+            pCount[p.charAt(i) - 'a']++;
+            sCount[s.charAt(i) - 'a']++;
+        }
+
+        // Step 2: Check the very first window
+        if (matches(pCount, sCount)) {
+            System.out.println("Anagram found at index 0");
+        }
+
+        // Step 3: Slide the window through the string
+        for (int i = m; i < n; i++) {
+            char newChar = s.charAt(i);       // char entering window
+            char oldChar = s.charAt(i - m);   // char leaving window
+
+            // Add new char
+            sCount[newChar - 'a']++;
+
+            // Remove old char
+            sCount[oldChar - 'a']--;
+
+            // Compare counts
+            if (matches(pCount, sCount)) {
+                System.out.println("Anagram found at index " + (i - m + 1));
+            }
+        }
+    }
+
+    // helper to compare frequency arrays
+    private static boolean matches(int[] a, int[] b) {
+        for (int i = 0; i < 26; i++) {
+            if (a[i] != b[i]) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        findAnagrams("cbaebabacd", "abc"); // expect 0, 6
+    }
+}
