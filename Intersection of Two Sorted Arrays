@@ -1,0 +1,37 @@
+public class IntersectionTwoSortedArrays {
+
+    public static void printIntersection(int[] arr1, int[] arr2) {
+        int i = 0, j = 0;
+        int prev = Integer.MIN_VALUE; // track last printed value
+
+        while (i < arr1.length && j < arr2.length) {
+            if (arr1[i] == arr2[j]) {
+                if (arr1[i] != prev) { // avoid duplicates
+                    System.out.print(arr1[i] + " ");
+                    prev = arr1[i];
+                }
+                i++;
+                j++;
+            } else if (arr1[i] < arr2[j]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {1,2,2,3,4,5};
+        int[] arr2 = {2,2,3,5,6};
+
+        System.out.print("Intersection: ");
+        printIntersection(arr1, arr2); // 2 3 5
+        System.out.println();
+
+        // Edge cases
+        printIntersection(new int[]{}, new int[]{1,2,3});      // (empty)
+        printIntersection(new int[]{1,2,3}, new int[]{});      // (empty)
+        printIntersection(new int[]{1,1,1}, new int[]{1,1,1}); // 1
+        printIntersection(new int[]{1,3,5}, new int[]{2,4,6}); // (empty)
+    }
+}
