@@ -1,0 +1,59 @@
+import java.util.*;
+
+public class SlidingWindowProductOptimized {
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 0, 4, 5};
+        int k = 3;
+        long[] result = findProducts(arr, k);
+
+        System.out.println("Products of each window:");
+        for (long val : result) {
+            System.out.print(val + " ");
+        }
+    }
+
+    public static long[] findProducts(int[] arr, int k) {
+        if (arr.length < k) return new long[0]; // edge case: window > array
+
+        long[] result = new long[arr.length - k + 1];
+        long product = 1;
+        int zeroCount = 0;
+
+        // First window setup
+        for (int i = 0; i < k; i++) {
+            if (arr[i] == 0) zeroCount++;
+            else product *= arr[i];
+        }
+
+        result[0] = (zeroCount > 0) ? 0 : product;
+
+        // Slide window
+        for (int i = k; i < arr.length; i++) {
+            int outgoing = arr[i - k];
+            int incoming = arr[i];
+
+            // Remove outgoing element
+            if (outgoing == 0) {
+                zeroCount--;
+            } else {
+                product /= outgoing;
+            }
+
+            // Add incoming element
+            if (incoming == 0) {
+                zeroCount++;
+            } else {
+                product *= incoming;
+            }
+
+            // Set result for this window
+            if (zeroCount > 0) {
+                result[i - k + 1] = 0;
+            } else {
+                result[i - k + 1] = product;
+            }
+        }
+
+        return result;
+    }
+}
