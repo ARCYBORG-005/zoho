@@ -1,0 +1,30 @@
+public class RemoveDuplicatesSortedArray {
+
+    public static int removeDuplicates(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+
+        int i = 0; // slow pointer
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[j] != nums[i]) {
+                i++;
+                nums[i] = nums[j]; // overwrite duplicate
+            }
+        }
+        return i + 1; // new length
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1,1,2,2,3,4,4,5};
+        int newLength = removeDuplicates(nums);
+        System.out.print("Unique elements: ");
+        for (int k = 0; k < newLength; k++) {
+            System.out.print(nums[k] + " ");
+        }
+        System.out.println("\nLength = " + newLength);
+
+        // Edge cases
+        System.out.println(removeDuplicates(new int[]{}));     // 0
+        System.out.println(removeDuplicates(new int[]{1}));    // 1
+        System.out.println(removeDuplicates(new int[]{1,1,1}));// 1
+    }
+}
