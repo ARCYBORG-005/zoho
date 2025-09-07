@@ -1,0 +1,216 @@
+
+The **Two Pointers pattern** has a few main “types” (variations). Think of them as **strategies** you pick depending on the problem.
+
+---
+
+# 🧭 Main Types of Two Pointers
+
+### 1. **Opposite Ends (Inward Moving)**
+
+* Pointers: one at start (`left`), one at end (`right`).
+* Move them toward each other until they meet.
+* Used when array/string is **sorted** or when you need to maximize/minimize something between ends.
+* **Examples:**
+
+  * Pair with target sum in sorted array
+  * Container with most water
+  * Trapping rainwater
+
+---
+
+### 2. **Same Direction (Forward Moving)**
+
+* Both pointers start at the beginning.
+* One pointer moves ahead (like a “scout”), the other follows behind.
+* Useful for scanning subarrays/substrings or removing duplicates.
+* **Examples:**
+
+  * Remove duplicates from sorted array
+  * Longest substring without repeating characters (sliding window flavor)
+  * Merging intervals / skipping elements
+
+---
+
+### 3. **Two Arrays / Two Strings**
+
+* One pointer for each array/string.
+* Useful when comparing, merging, or finding intersections.
+* **Examples:**
+
+  * Merge two sorted arrays (like in merge sort)
+  * Intersection of two sorted arrays
+  * Checking if one string is subsequence of another
+
+---
+
+### 4. **Fast & Slow Pointers (Tortoise & Hare)**
+
+* Special case: one pointer moves 1 step, another moves 2 steps.
+* Used for **cycle detection** or problems involving loops in linked lists/arrays.
+* **Examples:**
+
+  * Detect cycle in linked list (Floyd’s algorithm)
+  * Find middle of linked list
+  * Happy number problem
+
+---
+
+# 📌 Summary of Types
+
+1. **Opposite Ends** → searching, maximizing area, water trapping.
+2. **Same Direction** → skipping duplicates, window-like problems.
+3. **Two Sequences** → merging/comparing arrays/strings.
+4. **Fast & Slow** → cycle detection, middle element.
+
+---
+Excellent catch 🙌 — this is where beginners often get confused.
+👉 **Not all Two Pointer techniques require sorted arrays.**
+Let’s break it down by the 4 types I mentioned:
+
+---
+
+# 🧭 1. Opposite Ends (Inward Moving)
+
+* **Usually requires sorted array** (e.g., pair with target sum).
+* But not always:
+
+  * Container With Most Water works even if the array is **unsorted** (heights can be random).
+  * Trapping Rainwater also works on **unsorted heights**.
+
+**So:** Sometimes yes, sometimes no. Sorted helps when you’re searching for sums.
+
+---
+
+# 🧭 2. Same Direction (Forward Moving)
+
+* **Does NOT require sorted input.**
+* Example: Remove duplicates does need sorting (because duplicates are together).
+* But many problems (like longest substring without repeat) don’t.
+
+**So:** Depends on whether duplicates are involved.
+
+---
+
+# 🧭 3. Two Sequences (Two Arrays / Two Strings)
+
+* **Usually requires sorting** if you want to compare efficiently.
+
+  * Example: Intersection of two arrays → best done if sorted.
+  * Merge two sorted arrays → already sorted as a condition.
+* But: Checking if one string is subsequence of another → no sorting needed.
+
+**So:** Sorting helps, but not mandatory.
+
+---
+
+# 🧭 4. Fast & Slow Pointers (Cycle Problems)
+
+* **Never requires sorting.**
+* It’s used on **linked lists** or sequences where movement matters, not order.
+
+**So:** Works fine on unsorted structures.
+
+---
+
+# ✅ Final Answer
+
+🔹 **Sorted array is NOT always required.**
+
+* **Required** when problem depends on ordering (finding pairs, removing duplicates).
+* **Not required** for container, rainwater, cycle detection, subsequences, etc.
+
+---
+
+👉 Quick shortcut:
+
+* If the logic is about **values being ordered (like sums, duplicates, binary search style)** → sorted helps.
+* If the logic is about **movement, positions, or continuous scanning** a quick reference sheet.
+
+public class TwoPointersCheatSheet {
+
+    // 1. Opposite Ends (Inward)
+    static void oppositeEnds(int[] arr) {
+        int left = 0, right = arr.length - 1;
+        while (left < right) {
+            // Example: Pair with target sum
+            int sum = arr[left] + arr[right];
+            if (sum == 10) {
+                System.out.println("Pair: " + arr[left] + ", " + arr[right]);
+                left++; right--; // move both or just one
+            } else if (sum < 10) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+
+    // 2. Same Direction (Forward)
+    static int sameDirection(int[] arr) {
+        int write = 1; // place for next unique
+        for (int read = 1; read < arr.length; read++) {
+            if (arr[read] != arr[read - 1]) {
+                arr[write] = arr[read];
+                write++;
+            }
+        }
+        return write; // new length
+    }
+
+    // 3. Two Sequences (Two Arrays)
+    static void twoSequences(int[] a, int[] b) {
+        int i = 0, j = 0;
+        while (i < a.length && j < b.length) {
+            if (a[i] == b[j]) {
+                System.out.println("Common: " + a[i]);
+                i++; j++;
+            } else if (a[i] < b[j]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+    }
+
+    // 4. Fast & Slow (Tortoise & Hare)
+    static boolean hasCycle(ListNode head) {
+        if (head == null) return false;
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return true; // cycle found
+        }
+        return false;
+    }
+
+    // Linked list node for cycle example
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int v) { val = v; }
+    }
+
+    public static void main(String[] args) {
+        // Opposite Ends
+        int[] arr = {1,2,3,4,6,8,9};
+        oppositeEnds(arr);
+
+        // Same Direction
+        int[] dupArr = {1,1,2,2,3,4};
+        int newLen = sameDirection(dupArr);
+        System.out.println("Unique length: " + newLen);
+
+        // Two Sequences
+        int[] a = {1,2,4,6};
+        int[] b = {2,4,6,8};
+        twoSequences(a, b);
+
+        // Fast & Slow
+        ListNode n1 = new ListNode(1);
+        ListNode n2 = new ListNode(2);
+        n1.next = n2;
+        n2.next = n1; // cycle
+        System.out.println("Has cycle: " + hasCycle(n1));
+    }
+}
