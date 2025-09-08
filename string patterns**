@@ -1,0 +1,67 @@
+Step 1: Ask — What is the Goal?
+
+Search-based? (Find an anagram, substring, pattern)
+
+Validation-based? (Check palindrome, balanced brackets)
+
+Transformation-based? (Reverse words, compress string, remove duplicates)
+
+👉 This narrows the category immediately.
+
+🧩 Step 2: Identify Common Patterns
+
+Here are the most common patterns in string problems (with examples):
+
+1. Sliding Window
+
+When problem asks for substring or subarray with conditions.
+
+Ex:
+
+Longest Substring Without Repeating Characters
+
+Minimum Window Substring
+
+Find Anagrams in String
+
+⚡ Trick: Use two pointers (left, right) and frequency arrays.
+
+2. Two Pointers
+
+When problem is about comparison from both ends.
+
+Ex:
+
+Palindrome check (left vs right)
+
+Remove duplicates in-place
+
+Reverse words or characters in string
+
+⚡ Trick: Always think of start and end moving toward middle.
+
+3. Frequency Count
+
+When problem is about matching characters.
+
+Ex:
+
+Anagram check
+
+First Unique Character
+
+Valid Anagram
+
+⚡ Trick: Use int[26] for lowercase or int[128] for ASCII.
+
+4. Dynamic Programming (DP)
+
+When problem asks for longest subsequence / substring.
+
+Ex:
+
+Longest Palindromic Substring (expand center is also O(N²))
+
+Longest Common Subsequence / Substring
+
+⚡ Trick: Use DP table for overlapping subproblems.
