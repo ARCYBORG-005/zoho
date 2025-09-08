@@ -1,0 +1,57 @@
+public class MinWindowSubstring {
+
+    public static String minWindow(String s, String t) {
+        if (s == null || t == null || s.length() < t.length()) return "";
+
+        int[] tCount = new int[128]; // freq of chars in t
+        int[] sCount = new int[128]; // freq of current window
+
+        // build frequency map of t
+        for (int i = 0; i < t.length(); i++) {
+            tCount[t.charAt(i)]++;
+        }
+
+        int required = t.length(); // total chars to match
+        int formed = 0;           // how many matched so far
+
+        int left = 0, minLen = Integer.MAX_VALUE, start = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+
+            // add to window
+            sCount[c]++;
+
+            // if char in window <= char needed → valid match
+            if (tCount[c] > 0 && sCount[c] <= tCount[c]) {
+                formed++;
+            }
+
+            // try shrinking window
+            while (formed == required) {
+                // update minimum
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    start = left;
+                }
+
+                // shrink from left
+                char leftChar = s.charAt(left);
+                sCount[leftChar]--;
+                if (tCount[leftChar] > 0 && sCount[leftChar] < tCount[leftChar]) {
+                    formed--;
+                }
+                left++;
+            }
+        }
+
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+    }
+
+    // Test
+    public static void main(String[] args) {
+        System.out.println(minWindow("ADOBECODEBANC", "ABC")); // "BANC"
+        System.out.println(minWindow("a", "a"));               // "a"
+        System.out.println(minWindow("a", "aa"));              // ""
+    }
+}
