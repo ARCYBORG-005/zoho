@@ -1,0 +1,24 @@
+public class RemoveDuplicatesString {
+    public static int removeDuplicates(char[] str) {
+        if (str == null || str.length == 0) return 0;
+
+        int i = 0;
+        for (int j = 1; j < str.length; j++) {
+            if (str[j] != str[i]) {
+                i++;
+                str[i] = str[j];
+            }
+        }
+        return i + 1; // new length
+    }
+
+    public static void main(String[] args) {
+        char[] s = {'a','a','b','b','c','c','d'};
+        int len = removeDuplicates(s);
+        System.out.print("Result: ");
+        for (int k = 0; k < len; k++) {
+            System.out.print(s[k]);
+        }
+        // Output: abcd
+    }
+}
