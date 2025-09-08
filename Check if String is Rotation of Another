@@ -1,0 +1,92 @@
+public class RotationChecker {
+
+    // Public API
+    public static boolean isRotation(String s1, String s2) {
+        // Edge cases
+        if (s1 == null || s2 == null) return false;
+        int n = s1.length();
+        int m = s2.length();
+        if (n != m) return false;        // lengths must match
+        if (n == 0) return true;         // both empty -> rotation
+
+        // Build doubled text = s1 + s1 using primitive char array (no concat or substring)
+        char[] s1Chars = s1.toCharArray();          // allowed minimal conversion
+        char[] text = new char[2 * n];
+        for (int i = 0; i < n; i++) {
+            text[i] = s1Chars[i];
+            text[i + n] = s1Chars[i];
+        }
+
+        // Pattern is s2
+        char[] pattern = s2.toCharArray();
+
+        // KMP search: is pattern a substring of text?
+        return kmpSearch(text, pattern);
+    }
+
+    // KMP search: returns true if pattern exists in text
+    private static boolean kmpSearch(char[] text, char[] pattern) {
+        int N = text.length;
+        int M = pattern.length;
+        if (M == 0) return true;
+
+        int[] lps = computeLPS(pattern); // longest prefix-suffix table
+        int i = 0; // index for text
+        int j = 0; // index for pattern
+
+        while (i < N) {
+            if (text[i] == pattern[j]) {
+                i++;
+                j++;
+                if (j == M) {
+                    // Found full match
+                    return true;
+                }
+            } else {
+                if (j != 0) {
+                    j = lps[j - 1]; // fall back in pattern
+                } else {
+                    i++;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Compute LPS (longest proper prefix which is also suffix) array for pattern
+    private static int[] computeLPS(char[] pat) {
+        int m = pat.length;
+        int[] lps = new int[m];
+        // lps[0] = 0 by default
+        int len = 0; // length of previous longest prefix suffix
+        int i = 1;
+
+        while (i < m) {
+            if (pat[i] == pat[len]) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else {
+                if (len != 0) {
+                    len = lps[len - 1]; // try shorter prefix
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+
+    // Quick tests / demonstration
+    public static void main(String[] args) {
+        System.out.println(isRotation(null, "a"));                 // false
+        System.out.println(isRotation("", ""));                    // true
+        System.out.println(isRotation("a", ""));                   // false
+        System.out.println(isRotation("waterbottle", "erbottlewat")); // true
+        System.out.println(isRotation("hello", "llohe"));          // true
+        System.out.println(isRotation("hello", "helol"));          // false
+        System.out.println(isRotation("aa", "aa"));                // true
+        System.out.println(isRotation("abc", "cab"));              // true
+    }
+}
