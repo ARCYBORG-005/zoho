@@ -1,0 +1,80 @@
+class NQueens {
+    static int N;
+
+    // Arrays to track columns and diagonals
+    static int[] cols;
+    static int[] diag1;
+    static int[] diag2;
+
+    // Board to store queen positions
+    static int[][] board;
+
+    // Main solver
+    static boolean solveNQueens(int n) {
+        N = n;
+        cols = new int[N];
+        diag1 = new int[2 * N - 1];
+        diag2 = new int[2 * N - 1];
+        board = new int[N][N];
+
+        if (!placeQueen(0)) {
+            System.out.println("No solution exists");
+            return false;
+        }
+
+        printBoard();
+        return true;
+    }
+
+    // Recursive backtracking
+    static boolean placeQueen(int row) {
+        // Base case: all queens placed
+        if (row == N) {
+            return true;
+        }
+
+        // Try each column
+        for (int col = 0; col < N; col++) {
+            if (isSafe(row, col)) {
+                // Place queen
+                board[row][col] = 1;
+                cols[col] = 1;
+                diag1[row - col + N - 1] = 1;
+                diag2[row + col] = 1;
+
+                // Recurse for next row
+                if (placeQueen(row + 1)) return true;
+
+                // Backtrack
+                board[row][col] = 0;
+                cols[col] = 0;
+                diag1[row - col + N - 1] = 0;
+                diag2[row + col] = 0;
+            }
+        }
+        return false; // no valid position in this row
+    }
+
+    // O(1) safety check
+    static boolean isSafe(int row, int col) {
+        return cols[col] == 0 &&
+               diag1[row - col + N - 1] == 0 &&
+               diag2[row + col] == 0;
+    }
+
+    // Print board
+    static void printBoard() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (board[i][j] == 1) System.out.print("Q ");
+                else System.out.print(". ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Driver
+    public static void main(String[] args) {
+        solveNQueens(8); // Example: 8-Queens
+    }
+}
