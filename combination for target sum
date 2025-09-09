@@ -1,0 +1,30 @@
+class CombinationSum {
+    static void findCombinations(int[] arr, int index, int n, int target, int[] combo, int comboSize) {
+        if (target == 0) {
+            // Print combination
+            System.out.print("[");
+            for (int i = 0; i < comboSize; i++) {
+                System.out.print(combo[i]);
+                if (i < comboSize - 1) System.out.print(",");
+            }
+            System.out.println("]");
+            return;
+        }
+
+        if (index == n || target < 0) return;
+
+        // Include arr[index]
+        combo[comboSize] = arr[index];
+        findCombinations(arr, index, n, target - arr[index], combo, comboSize + 1);
+
+        // Exclude arr[index]
+        findCombinations(arr, index + 1, n, target, combo, comboSize);
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 3, 6, 7};
+        int target = 7;
+        int[] combo = new int[20];
+        findCombinations(arr, 0, arr.length, target, combo, 0);
+    }
+}
