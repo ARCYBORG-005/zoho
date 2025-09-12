@@ -1,0 +1,52 @@
+class Maxmin {
+    public static void max(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            System.out.println("Array must contain at least two elements.");
+            return;
+        }
+
+        int max = Integer.MIN_VALUE;
+        int second = Integer.MIN_VALUE;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                // new maximum found
+                second = max;
+                max = arr[i];
+            } else if (arr[i] > second && arr[i] != max) {
+                // new second max found
+                second = arr[i];
+            }
+        }
+
+        if (second == Integer.MIN_VALUE) {
+            System.out.println("No distinct second maximum value (all elements may be equal).");
+        } else {
+            System.out.println("Maximum: " + max);
+            System.out.println("Second Maximum: " + second);
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {1, 2, 3, 4, 5, 6};       // normal case
+        int[] arr2 = {10, 10, 10};             // all same
+        int[] arr3 = {5};                      // only one element
+        int[] arr4 = {-1, -2, -3, -4};         // negatives
+        int[] arr5 = {7, 7, 8, 8, 9};          // duplicates but valid second max
+
+        System.out.println("Test 1:");
+        max(arr1);
+
+        System.out.println("\nTest 2:");
+        max(arr2);
+
+        System.out.println("\nTest 3:");
+        max(arr3);
+
+        System.out.println("\nTest 4:");
+        max(arr4);
+
+        System.out.println("\nTest 5:");
+        max(arr5);
+    }
+}
