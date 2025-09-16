@@ -1,0 +1,39 @@
+class CyclicSort {
+    public static void cyclicSort(int[] nums) {
+        int i = 0;
+        while (i < nums.length) {
+            int correctIndex = nums[i] - 1; // correct position for nums[i]
+
+            // Only swap if the number is in the valid range (1..n)
+            // and not already at its correct index
+            if (nums[i] >= 1 && nums[i] <= nums.length && nums[i] != nums[correctIndex]) {
+                // swap nums[i] with nums[correctIndex]
+                int temp = nums[i];
+                nums[i] = nums[correctIndex];
+                nums[correctIndex] = temp;
+            } else {
+                i++;
+            }
+        }
+    }
+
+    // Utility method to print array
+    public static void printArray(int[] nums) {
+        for (int num : nums) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
+    // Demo
+    public static void main(String[] args) {
+        int[] nums = {3, 1, 5, 4, 2};
+        System.out.println("Before Cyclic Sort:");
+        printArray(nums);
+
+        cyclicSort(nums);
+
+        System.out.println("After Cyclic Sort:");
+        printArray(nums);
+    }
+}
