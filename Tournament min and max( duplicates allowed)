@@ -1,0 +1,51 @@
+import java.io.*;
+import java.util.*;
+
+public class GFG {
+
+    static int[] getMinMax(int arr[], int low, int high) {
+        int[] minmax = new int[2];
+        int[] left = new int[2];
+        int[] right = new int[2];
+        int mid;
+
+        // If there is only one element
+        if (low == high) {
+            minmax[0] = arr[low]; // min
+            minmax[1] = arr[low]; // max
+            return minmax;
+        }
+
+        // If there are two elements
+        if (high == low + 1) {
+            if (arr[low] > arr[high]) {
+                minmax[0] = arr[high]; // min
+                minmax[1] = arr[low];  // max
+            } else {
+                minmax[0] = arr[low];  // min
+                minmax[1] = arr[high]; // max
+            }
+            return minmax;
+        }
+
+        // If there are more than 2 elements
+        mid = (low + high) / 2;
+        left = getMinMax(arr, low, mid);
+        right = getMinMax(arr, mid + 1, high);
+
+        // Compare minimums and maximums of two parts
+        minmax[0] = Math.min(left[0], right[0]); // min
+        minmax[1] = Math.max(left[1], right[1]); // max
+
+        return minmax;
+    }
+
+    public static void main(String args[]) {
+        int arr[] = { 1000, 11, 445, 1, 330, 3000 };
+        int arr_size = arr.length;
+        int[] minmax = getMinMax(arr, 0, arr_size - 1);
+
+        System.out.printf("\nMinimum element is %d", minmax[0]);
+        System.out.printf("\nMaximum element is %d", minmax[1]);
+    }
+}
